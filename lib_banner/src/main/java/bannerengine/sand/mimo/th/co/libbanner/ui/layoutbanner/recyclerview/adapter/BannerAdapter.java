@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -42,13 +44,15 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BannerViewHolder) {
             BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+            bannerViewHolder.LayoutBannerContent.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, Config.getInstance().size16to9));
+
             bannerViewHolder.LayoutBannerContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickBannerItem(view);
+                    clickBannerItem(view,bannerDataList.get(position));
                 }
             });
             Glide.with(bannerViewHolder.imageView.getContext())
@@ -61,7 +65,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return bannerDataList.size();
+        return bannerDataList == null ? 0 : bannerDataList.size();
     }
 
     public List<BannerMyData> getBannerDataList() {
@@ -81,7 +85,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeRemoved(0, totalSize);
     }
 
-    private void clickBannerItem(View view){
-
+    private void clickBannerItem(View view, BannerMyData bannerMyData){
+        mListener.OnClickItemBanner(bannerMyData);
     }
 }

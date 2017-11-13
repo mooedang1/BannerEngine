@@ -8,7 +8,6 @@ import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerDa
 
 public class LayoutAllBannerContractor {
     interface View{
-
         void setUpDataItem(BannerData bannerData);
     }
 

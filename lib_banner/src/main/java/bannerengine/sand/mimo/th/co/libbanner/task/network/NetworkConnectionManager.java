@@ -24,7 +24,7 @@ public class NetworkConnectionManager {
     }
 
     public void callServer(final onNetworkCallbackListener listener,String chanelId,String categoryId,String limit,boolean directUrl){
-        OkHttpClient okHttpClient =new OkHttpClient.Builder()
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60 / 2, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)

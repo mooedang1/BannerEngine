@@ -1,6 +1,7 @@
 package bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.RelativeLayout;
 
 import bannerengine.sand.mimo.th.co.libbanner.R;
+import bannerengine.sand.mimo.th.co.libbanner.global.Config;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerData;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerMyData;
 import bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview.CirclePagerIndicatorDecoration;
@@ -30,10 +32,10 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
     private RecyclerView recyclerview;
     private BannerAdapter bannerAdapter;
     private OnListener mListener;
+    private  int runPosition = 0;
 
-
-    public interface OnListener{
-       void OnClickItemBanner(BannerMyData bannerMyData);
+    public interface OnListener {
+        void OnClickItemBanner(BannerMyData bannerMyData);
     }
 
     public void setListener(OnListener mListener) {
@@ -44,10 +46,12 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
         super(context);
         init();
     }
+
     public LayoutAllBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
+
     public LayoutAllBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
@@ -73,35 +77,43 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
         super.onAttachedToWindow();
     }
 
-    private void init(){
+    private void init() {
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         View v = mInflater.inflate(R.layout.layout_banner_pagerview, this, true);
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerview.setHasFixedSize(true);
         recyclerview.addItemDecoration(
                 new CirclePagerIndicatorDecoration(
                         ContextCompat.getColor(getContext(), R.color.my_gray1),
                         ContextCompat.getColor(getContext(), R.color.my_gray2)
                 )
         );
+        autoRun();
     }
 
 
-    public void setUp(String chanelId,String categoryId,String limit,boolean directUrl){
-        mPresenter = new LayoutAllBannerPresenter(this);
-        mPresenter.callService(chanelId,categoryId,limit,directUrl);
+    public void setUp(final String chanelId, final String categoryId, final String limit, final boolean directUrl) {
+        recyclerview.post(new Runnable() {
+            @Override
+            public void run() {
+                Config.getInstance().setSize16to9(getContext());
+                mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this);
+                mPresenter.callService(chanelId, categoryId, limit, directUrl);
+            }
+        });
     }
 
-    public void removeBannerAll(){
-        if(bannerAdapter!=null){
+    public void removeBannerAll() {
+        if (bannerAdapter != null) {
             bannerAdapter.removeAllBanner();
         }
     }
 
     @Override
-    public void setUpDataItem(BannerData bannerData){
+    public void setUpDataItem(BannerData bannerData) {
         bannerAdapter = new BannerAdapter(bannerData.getData());
         recyclerview.setAdapter(createAnimationInAdapter(bannerAdapter));
         recyclerview.setItemAnimator(createScaleOutAnimationOutAdapter());
@@ -112,13 +124,13 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
         ScaleInAnimationAdapter scaleInAnimationAdapter = new ScaleInAnimationAdapter(adapter);
         scaleInAnimationAdapter.setFirstOnly(false);
         scaleInAnimationAdapter.setInterpolator(new OvershootInterpolator(2f));
-        scaleInAnimationAdapter.setDuration(300);
+        scaleInAnimationAdapter.setDuration(200);
         return scaleInAnimationAdapter;
     }
 
     private ScaleInBottomAnimator createScaleOutAnimationOutAdapter() {
         ScaleInBottomAnimator animator = new ScaleInBottomAnimator(new DecelerateInterpolator());
-        animator.setRemoveDuration(200);
+        animator.setRemoveDuration(0);
         return animator;
     }
 
@@ -127,5 +139,33 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
 
     }
 
-
+    private void autoRun() {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            boolean flag = true;
+            @Override
+            public void run() {
+                if (Config.getInstance().autoRun) {
+                    if (runPosition < bannerAdapter.getItemCount()) {
+                        if (runPosition == bannerAdapter.getItemCount() - 1) {
+                            flag = false;
+                        } else if (runPosition == 0) {
+                            flag = true;
+                        }
+                        if (flag) {
+                            runPosition++;
+                        } else {
+                            runPosition = 0;
+                        }
+                        recyclerview.smoothScrollToPosition(runPosition);
+                        handler.postDelayed(this, Config.getInstance().speedScroll);
+                    }
+                }
+            }
+        };
+        handler.postDelayed(runnable, Config.getInstance().speedScroll);
+    }
 }
+
+
+

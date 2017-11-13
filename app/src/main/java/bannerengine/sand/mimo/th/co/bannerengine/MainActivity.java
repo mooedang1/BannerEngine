@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void reset(View view) {
         layoutAllBanner.removeBannerAll();
-        layoutAllBanner.setUp("6651bc909ffd809a562227f9b083f0aa76aee5cc","cmmahome","10",true);
+        layoutAllBanner.setUp("34256e7f631d9b279c40274b066edeed","categorypoints","10",true);
         layoutAllBanner.setListener(new LayoutAllBanner.OnListener() {
             @Override
             public void OnClickItemBanner(BannerMyData bannerMyData) {
