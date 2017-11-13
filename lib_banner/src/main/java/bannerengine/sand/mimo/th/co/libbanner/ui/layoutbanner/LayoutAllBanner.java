@@ -9,6 +9,7 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -27,12 +28,13 @@ import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
  * Created by orapong on 11/9/2017 AD.
  */
 
-public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerContractor.View, BannerAdapter.OnListener {
+public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerContractor.View, BannerAdapter.OnListener,RecyclerView.OnItemTouchListener {
     private LayoutAllBannerContractor.Action mPresenter;
     private RecyclerView recyclerview;
     private BannerAdapter bannerAdapter;
     private OnListener mListener;
-    private  int runPosition = 0;
+    private int runPosition = 0;
+    private boolean breakAutoRun = false;
 
     public interface OnListener {
         void OnClickItemBanner(BannerMyData bannerMyData);
@@ -91,6 +93,7 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
                         ContextCompat.getColor(getContext(), R.color.my_gray2)
                 )
         );
+        recyclerview.addOnItemTouchListener(this);
         autoRun();
     }
 
@@ -136,7 +139,7 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
 
     @Override
     public void OnClickItemBanner(BannerMyData bannerMyData) {
-
+        mListener.OnClickItemBanner(bannerMyData);
     }
 
     private void autoRun() {
@@ -145,7 +148,7 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
             boolean flag = true;
             @Override
             public void run() {
-                if (Config.getInstance().autoRun) {
+                if (Config.getInstance().autoRun && breakAutoRun == false) {
                     if (runPosition < bannerAdapter.getItemCount()) {
                         if (runPosition == bannerAdapter.getItemCount() - 1) {
                             flag = false;
@@ -160,10 +163,37 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
                         recyclerview.smoothScrollToPosition(runPosition);
                         handler.postDelayed(this, Config.getInstance().speedScroll);
                     }
+                }else{
+                    handler.postDelayed(this, Config.getInstance().speedScroll);
                 }
             }
         };
         handler.postDelayed(runnable, Config.getInstance().speedScroll);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        if (e.getAction() == MotionEvent.ACTION_DOWN){
+            breakAutoRun = true;
+        }else if(e.getAction() == MotionEvent.ACTION_UP){
+            rv.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    breakAutoRun = false;
+                }
+            },Config.getInstance().speedScroll);
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
     }
 }
 

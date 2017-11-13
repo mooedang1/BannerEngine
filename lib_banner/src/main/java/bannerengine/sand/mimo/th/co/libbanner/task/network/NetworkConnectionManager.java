@@ -24,12 +24,18 @@ public class NetworkConnectionManager {
     }
 
     public void callServer(final onNetworkCallbackListener listener,String chanelId,String categoryId,String limit,boolean directUrl){
+
+//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60 / 2, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
+                //.addInterceptor(logging)
                 .cache(null)
                 .build();
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
