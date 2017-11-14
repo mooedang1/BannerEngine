@@ -9,9 +9,15 @@ public class StateBannerFragment {
     public static StateBannerFragment getInstance() {
         return ourInstance;
     }
+
+    public enum StatusDirect{
+        NOTING,WEB,YOUTUBE,
+    }
+
     public enum StateFragment {
         SHOW_BANNER,
-        SHOW_WEB
+        SHOW_VIDEO,
+        SHOW_VIDEO_ACTIVE
     }
     public enum StateYoutube {
         YOUTUBE_UNDEFINED,
@@ -20,6 +26,7 @@ public class StateBannerFragment {
         YOUTUBE_PAUSED,
         YOUTUBE_PLAY,
         YOUTUBE_BUFFERING,
-        YOUTUBE_CUED
+        YOUTUBE_CUED,
+        YOUTUBE_BREAK
     }
 }

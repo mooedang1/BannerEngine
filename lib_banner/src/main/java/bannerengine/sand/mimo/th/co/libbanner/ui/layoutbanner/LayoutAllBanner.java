@@ -12,7 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import bannerengine.sand.mimo.th.co.libbanner.R;
 import bannerengine.sand.mimo.th.co.libbanner.global.Config;
@@ -28,7 +29,7 @@ import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
  * Created by orapong on 11/9/2017 AD.
  */
 
-public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerContractor.View, BannerAdapter.OnListener {
+public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerContractor.View, BannerAdapter.OnListener {
     private LayoutAllBannerContractor.Action mPresenter;
     private ItemTouchHelper itemTouchHelper;
     private RecyclerView recyclerview;
@@ -40,7 +41,7 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
         boolean flag = true;
         @Override
         public void run() {
-            if (Config.getInstance().getAutoRun() && breakAutoRun == false) {
+            if (Config.getInstance().getAutoRun() && getBreakAutoRun() == false) {
                 if (runPosition < bannerAdapter.getItemCount()) {
                     if (runPosition == bannerAdapter.getItemCount() - 1) {
                         flag = false;
@@ -87,22 +88,31 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
     @Override
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        if (View.VISIBLE == visibility) {
-            //LogUtil.d("VISIBLE");
+        if (visibility == View.VISIBLE){
+            //onResume called
         } else {
-            removeBannerAll();
+            // onPause() called
+            if(bannerAdapter!=null) { bannerAdapter.stopVideo();}
         }
     }
+
+
 
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-//        if(hasWindowFocus){}
+        if (hasWindowFocus){
+            //onresume() called
+        } else {
+            // onPause() called
+            if(bannerAdapter!=null) { bannerAdapter.stopVideo();}
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        // onDestroy() called
     }
 
     @Override
@@ -110,10 +120,23 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
         super.onAttachedToWindow();
     }
 
+
+    TextView breakview;
+
     private void init() {
+        mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this);
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         View v = mInflater.inflate(R.layout.layout_banner_pagerview, this, true);
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
+        breakview = (TextView)v.findViewById(R.id.breakview);
+
+        breakview.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bannerAdapter.stopVideo();
+            }
+        });
+
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -146,7 +169,7 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
             @Override
             public void run() {
                 Config.getInstance().setSize16to9(getContext());
-                mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this);
+                removeBannerAll();
                 mPresenter.callService(chanelId, categoryId, limit, directUrl);
             }
         });
@@ -183,8 +206,21 @@ public class LayoutAllBanner extends RelativeLayout implements LayoutAllBannerCo
 
     @Override
     public void OnClickItemBanner(BannerMyData bannerMyData) {
+        mPresenter.OnClickItemBanner(bannerMyData);
+
         mListener.OnClickItemBanner(bannerMyData);
+
     }
+
+    public boolean getBreakAutoRun() {
+        return breakAutoRun;
+    }
+
+    @Override
+    public void setBreakAutoRun(boolean breakAutoRun) {
+        this.breakAutoRun = breakAutoRun;
+    }
+
 
     private void autoRun() {
         recyclerview.removeCallbacks(runnable);

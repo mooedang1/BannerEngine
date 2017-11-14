@@ -1,0 +1,80 @@
+<!--<iframe id="existing-iframe-example"-->
+        <!--width="100%" height="100%"-->
+        <!--src="https://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&autoplay=1&showinfo=0&controls=0&version=3&fs=0&modestbranding=0&rel=0"-->
+        <!--frameborder="0"-->
+        <!--style="border: solid 0px #FFF"-->
+<!--&gt;</iframe>-->
+<style>
+html, body {
+width:100%;
+height: 100%;
+margin: 0px;
+padding: 0px;
+}
+div.video-annotations {display:none;}
+</style>
+
+<iframe id="existing-iframe-example" width="100%" height="100%"
+src="https://www.youtube.com/embed/oQ5QWjGOfl8?enablejsapi=1&autoplay=1&showinfo=0&controls=0&version=3&fs=0&modestbranding=0&rel=0&autohide=0&iv_load_policy=3"
+frameborder="0" style="border: solid 0px #FFF;background: #000;"  allowfullscreen></iframe>
+
+<script type="text/javascript">
+    //https://developers.google.com/youtube/iframe_api_reference
+  var tag = document.createElement('script');
+  tag.id = 'iframe-demo';
+  tag.src = 'https://www.youtube.com/iframe_api';
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('existing-iframe-example', {
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+    });
+  }
+  function onPlayerReady(event) {
+    //document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
+    //player.playVideo();
+  }
+  function changeBorderColor(playerStatus) {
+    <!--Android.showAndroidToast("aaaa");-->
+    <!--if (playerStatus == -1) {-->
+    <!--//unstarted-->
+    <!--} else if (playerStatus == 0) {-->
+    <!--//ended-->
+    <!--} else if (playerStatus == 1) {-->
+    <!--//playing-->
+    <!--} else if (playerStatus == 2) {-->
+    <!--//paused-->
+    <!--} else if (playerStatus == 3) {-->
+    <!--//buffering-->
+    <!--} else if (playerStatus == 5) {-->
+    <!--//video cued-->
+    <!--}-->
+  }
+  function onPlayerStateChange(event) {
+    //changeBorderColor(event.data);
+    if (event.data == -1) {
+    //unstarted
+        Android.onUnstarted();
+    } else if (event.data == 0) {
+    //ended
+        Android.onEnded();
+    } else if (event.data == 1) {
+    //playing
+        Android.onPlaying();
+    } else if (event.data == 2) {
+    //paused
+        Android.onPaused();
+    } else if (event.data == 3) {
+    //buffering
+        Android.onBuffering();
+    } else if (event.data == 5) {
+    //video cued
+        Android.onCued();
+    }
+  }
+</script>

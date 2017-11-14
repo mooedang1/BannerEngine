@@ -22,6 +22,7 @@ public class BannerMyData {
 
     private StateBannerFragment.StateFragment stateBannerFragment = StateBannerFragment.StateFragment.SHOW_BANNER;
     private StateBannerFragment.StateYoutube stateYoutube = StateBannerFragment.StateYoutube.YOUTUBE_UNDEFINED;
+    private StateBannerFragment.StatusDirect statusDirect = StateBannerFragment.StatusDirect.NOTING;
 
     public String getDescription() {
         return mDescription;
@@ -70,4 +71,31 @@ public class BannerMyData {
     public void setStateYoutube(StateBannerFragment.StateYoutube stateYoutube) {
         this.stateYoutube = stateYoutube;
     }
+
+    public StateBannerFragment.StatusDirect getStatusDirect() {
+        return statusDirect;
+    }
+
+    public void setStatusDirect(StateBannerFragment.StatusDirect statusDirect) {
+        this.statusDirect = statusDirect;
+    }
+
+    public void setStatusItem(){
+
+        if(getDirectUrl()!=null && getDirectUrl().equals("")==false){
+            //1. "#" ไม่ทำ
+            //2. "youtube"
+            //3. "http://live360?"
+            //4. "http://www.xxxx" ออกนอก
+            //Toast.makeText(ctx, oDirectUrl, Toast.LENGTH_SHORT).show();
+            if (getDirectUrl().contains("#")) {
+                //ไม่ทำไร
+            } else if (getDirectUrl().contains("youtube")) {
+                setStatusDirect(StateBannerFragment.StatusDirect.YOUTUBE);
+            } else {
+                setStatusDirect(StateBannerFragment.StatusDirect.WEB);
+            }
+        }
+    }
+
 }

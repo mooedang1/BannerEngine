@@ -16,24 +16,27 @@ public class MainActivity extends AppCompatActivity implements LayoutAllBanner.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         layoutAllBanner = (LayoutAllBanner) findViewById(R.id.layoutAllBanner);
-      //  layoutAllBanner.setUp("34256e7f631d9b279c40274b066edeed","categorypoints","10",true);
-      //  layoutAllBanner.setListener(this);
+       // callservice();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        layoutAllBanner.removeBannerAll();
-        layoutAllBanner.setUp("34256e7f631d9b279c40274b066edeed","categorypoints","10",true);
-        layoutAllBanner.setListener(this);
+        callservice();
     }
-
 
     public void reset(View view) {
+        callservice();
+    }
+
+    public void callservice(){
         layoutAllBanner.removeBannerAll();
-        layoutAllBanner.setUp("34256e7f631d9b279c40274b066edeed","categorypoints","10",true);
+        //layoutAllBanner.setUp("34256e7f631d9b279c40274b066edeed","categorypoints","10",true);
+        //layoutAllBanner.setUp("5648632e461fb17206f823c1d9e43bf3","callingvideo","10",true);
+        layoutAllBanner.setUp("6651bc909ffd809a562227f9b083f0aa76aee5cc","freesongs","10",true);
         layoutAllBanner.setListener(this);
     }
+
     public void nextpage(View view) {
         Intent intent = new Intent(MainActivity.this,Main2Activity.class);
         startActivity(intent);
@@ -43,6 +46,5 @@ public class MainActivity extends AppCompatActivity implements LayoutAllBanner.O
     public void OnClickItemBanner(BannerMyData bannerMyData) {
         Toast.makeText(this,bannerMyData.getImage().getTargetBannerBBHigh(),Toast.LENGTH_SHORT).show();
     }
-
 
 }

@@ -4,6 +4,8 @@ import bannerengine.sand.mimo.th.co.libbanner.global.LogUtil;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.NetworkConnectionManager;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.callback.onNetworkCallbackListener;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerData;
+import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerMyData;
+import bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview.help.StateBannerFragment;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
@@ -18,10 +20,16 @@ public class LayoutAllBannerPresenter implements LayoutAllBannerContractor.Actio
     public LayoutAllBannerPresenter(LayoutAllBannerContractor.View view) {
         this.view = view;
     }
-
     @Override
     public void callService(String chanelId,String categoryId,String limit,boolean directUrl){
         new NetworkConnectionManager().callServer(this,chanelId,categoryId,limit,directUrl);
+    }
+
+    @Override
+    public void OnClickItemBanner(BannerMyData bannerMyData){
+        if(bannerMyData.getStateBannerFragment() == StateBannerFragment.StateFragment.SHOW_VIDEO){
+            view.setBreakAutoRun(true);
+        }
     }
 
     //callServer start
@@ -30,10 +38,12 @@ public class LayoutAllBannerPresenter implements LayoutAllBannerContractor.Actio
         LogUtil.d("onResponse");
         if(bannerData!=null){
             this.bannerData = bannerData;
+            for (BannerMyData item:this.bannerData.getData()) {
+                item.setStatusItem();
+            }
             view.setUpDataItem(this.bannerData);
         }
     }
-
     @Override
     public void onBodyError(ResponseBody responseBodyError) {
         LogUtil.d("onBodyError");
