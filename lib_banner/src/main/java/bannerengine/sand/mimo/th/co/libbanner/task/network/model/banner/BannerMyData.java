@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview.help.StateBannerFragment;
+
 /**
  * Created by orapong on 11/10/2017 AD.
  */
@@ -17,6 +19,9 @@ public class BannerMyData {
     private BannerMyImage mImage;
     @SerializedName("url")
     private String mUrl;
+
+    private StateBannerFragment.StateFragment stateBannerFragment = StateBannerFragment.StateFragment.SHOW_BANNER;
+    private StateBannerFragment.StateYoutube stateYoutube = StateBannerFragment.StateYoutube.YOUTUBE_UNDEFINED;
 
     public String getDescription() {
         return mDescription;
@@ -50,4 +55,19 @@ public class BannerMyData {
         mUrl = url;
     }
 
+    public StateBannerFragment.StateFragment getStateBannerFragment() {
+        return stateBannerFragment;
+    }
+
+    public void setStateBannerFragment(StateBannerFragment.StateFragment stateBannerFragment) {
+        this.stateBannerFragment = stateBannerFragment;
+    }
+
+    public StateBannerFragment.StateYoutube getStateYoutube() {
+        return stateYoutube;
+    }
+
+    public void setStateYoutube(StateBannerFragment.StateYoutube stateYoutube) {
+        this.stateYoutube = stateYoutube;
+    }
 }

@@ -15,6 +15,11 @@
             android:layout_height="wrap_content"
             android:text="Reset"
             android:onClick="reset"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nextpage"
+            android:onClick="nextpage"/>
         <bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.LayoutAllBanner
             android:id="@+id/layoutAllBanner"
             android:layout_width="match_parent"

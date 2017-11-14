@@ -16,16 +16,18 @@ import java.util.List;
 import bannerengine.sand.mimo.th.co.libbanner.R;
 import bannerengine.sand.mimo.th.co.libbanner.global.Config;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerMyData;
+import bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview.help.StateBannerFragment;
 
 /**
  * Created by orapong on 11/10/2017 AD.
  */
 
-public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<BannerMyData> bannerDataList;
     private OnListener mListener;
 
-    public interface OnListener{
+
+    public interface OnListener {
         void OnClickItemBanner(BannerMyData bannerMyData);
     }
 
@@ -33,7 +35,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mListener = mListener;
     }
 
-    public BannerAdapter(List<BannerMyData> bannerDataList){
+    public BannerAdapter(List<BannerMyData> bannerDataList) {
         this.bannerDataList = bannerDataList;
     }
 
@@ -46,20 +48,31 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BannerViewHolder) {
-            BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
-            bannerViewHolder.LayoutBannerContent.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, Config.getInstance().size16to9));
+
+            final BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+            final BannerMyData bannerMyData = bannerDataList.get(position);
+
+            bannerViewHolder.LayoutBannerContent.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, Config.getInstance().getSize16to9()));
+
+            Glide.with(bannerViewHolder.imageView.getContext())
+                    .load(bannerMyData.getImage().getTargetBannerBBHigh())
+                    .placeholder(Config.getInstance().getPlaceholder())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(bannerViewHolder.imageView);
+
+            if(bannerMyData.getStateBannerFragment()== StateBannerFragment.StateFragment.SHOW_BANNER)
+                setShowImageView(bannerViewHolder);
+            else
+                setShowWebView(bannerViewHolder);
 
             bannerViewHolder.LayoutBannerContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickBannerItem(view,bannerDataList.get(position));
+                    setShowWebView(bannerViewHolder);
+                    clickBannerItem(view,bannerMyData);
                 }
             });
-            Glide.with(bannerViewHolder.imageView.getContext())
-                    .load(bannerDataList.get(position).getImage().getTargetBannerBBHigh())
-                    .placeholder(Config.getInstance().getPlaceholder())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(bannerViewHolder.imageView);
+
         }
     }
 
@@ -72,8 +85,8 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return bannerDataList;
     }
 
-    public void removeAllBanner(){
-        if(bannerDataList.isEmpty()){
+    public void removeAllBanner() {
+        if (bannerDataList.isEmpty()) {
             return;
         }
         int totalSize = bannerDataList.size();
@@ -85,7 +98,28 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeRemoved(0, totalSize);
     }
 
-    private void clickBannerItem(View view, BannerMyData bannerMyData){
+    public void updateAllShowBanner(){
+        if (bannerDataList.isEmpty()) {
+            return;
+        }
+        for (BannerMyData bannerMyData: bannerDataList) {
+            bannerMyData.setStateBannerFragment(StateBannerFragment.StateFragment.SHOW_BANNER);
+            bannerMyData.setStateYoutube(StateBannerFragment.StateYoutube.YOUTUBE_UNDEFINED);
+        }
+        notifyDataSetChanged();
+    }
+
+    private void clickBannerItem(View view, BannerMyData bannerMyData) {
         mListener.OnClickItemBanner(bannerMyData);
+    }
+
+    private void setShowWebView(BannerViewHolder bannerViewHolder) {
+        bannerViewHolder.webView.setVisibility(View.VISIBLE);
+        bannerViewHolder.imageView.setVisibility(View.GONE);
+    }
+
+    private void setShowImageView(BannerViewHolder bannerViewHolder){
+        bannerViewHolder.webView.setVisibility(View.GONE);
+        bannerViewHolder.imageView.setVisibility(View.VISIBLE);
     }
 }

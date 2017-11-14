@@ -1,4 +1,4 @@
-package bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview;
+package bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview.help;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;

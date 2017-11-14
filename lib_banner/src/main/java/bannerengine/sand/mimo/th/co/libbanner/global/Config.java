@@ -17,18 +17,17 @@ public class Config {
         return ourInstance;
     }
     private final String url = "https://ws-adv.ais.co.th/";
-    public boolean autoRun = true;
-    public int speedScroll = 1200;
-    public int placeholder = R.drawable.placeholder;
-    public int bannerWidth;
-    public int bannerHeight;
+    private boolean autoRun = true;
+    private int speedScroll = 1200;
+    private int placeholder = R.drawable.placeholder;
+    private int bannerWidth;
+    private int bannerHeight;
+    private int screenWidth = 0;
+    private int screenHeight = 0;
+    private int size16to9 = 0;
 
-    public int screenWidth = 0;
-    public int screenHeight = 0;
-    public int size16to9 = 0;
 
-
-    public void setScreenSizeDevice(Context context){
+    private void setScreenSizeDevice(Context context){
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics);
@@ -42,7 +41,7 @@ public class Config {
         LogUtil.d(Integer.toString(size16to9));
     }
 
-    public float getSize16to9(){
+    public int getSize16to9(){
         return size16to9;
     }
 
@@ -54,8 +53,24 @@ public class Config {
         return placeholder;
     }
 
-    public void setPlaceholder(int placeholder) {
+    private void setPlaceholder(int placeholder) {
         this.placeholder = placeholder;
+    }
+
+    public int getSpeedScroll() {
+        return speedScroll;
+    }
+
+    public void setSpeedScroll(int speedScroll) {
+        this.speedScroll = speedScroll;
+    }
+
+    public boolean getAutoRun() {
+        return autoRun;
+    }
+
+    public void setAutoRun(boolean autoRun) {
+        this.autoRun = autoRun;
     }
 
 }

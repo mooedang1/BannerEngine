@@ -32,28 +32,28 @@ public final class LogUtil {
     }
     public static void v(String msg) {
         if (LOG_ENABLE && Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, buildMsg(msg));
+            Log.v(TAG, TAG+buildMsg(msg));
         }
     }
 
 
     public static void d(String msg) {
         if (LOG_ENABLE && Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, buildMsg(msg));
+            Log.d(TAG, TAG+buildMsg(msg));
         }
     }
 
 
     public static void i(String msg) {
         if (LOG_ENABLE && Log.isLoggable(TAG, Log.INFO)) {
-            Log.i(TAG, buildMsg(msg));
+            Log.i(TAG, TAG+buildMsg(msg));
         }
     }
 
 
     public static void w(String msg) {
         if (LOG_ENABLE && Log.isLoggable(TAG, Log.WARN)) {
-            Log.w(TAG, buildMsg(msg));
+            Log.w(TAG, TAG+buildMsg(msg));
         }
     }
 
