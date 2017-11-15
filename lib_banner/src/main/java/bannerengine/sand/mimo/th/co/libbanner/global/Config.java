@@ -13,10 +13,13 @@ import bannerengine.sand.mimo.th.co.libbanner.R;
 public class Config {
 
     private static Config ourInstance = new Config();
+
     public static Config getInstance() {
         return ourInstance;
     }
-    private final String url = "https://ws-adv.ais.co.th/";
+
+
+    private final String base_url = "https://ws-adv.ais.co.th/";
     private boolean autoRun = true;
     private int speedScroll = 1200;
     private int placeholder = R.drawable.placeholder;
@@ -27,7 +30,7 @@ public class Config {
     private int size16to9 = 0;
 
 
-    private void setScreenSizeDevice(Context context){
+    private void setScreenSizeDevice(Context context) {
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics);
@@ -35,18 +38,18 @@ public class Config {
         screenHeight = metrics.widthPixels;
     }
 
-    public void setSize16to9(Context context){
+    public void setSize16to9(Context context) {
         setScreenSizeDevice(context);
-        size16to9 = (screenHeight/16)*9;
+        size16to9 = (screenHeight / 16) * 9;
         LogUtil.d(Integer.toString(size16to9));
     }
 
-    public int getSize16to9(){
-        return size16to9;
+    public String getBase_url() {
+        return base_url;
     }
 
-    public String getUrl() {
-        return url;
+    public int getSize16to9() {
+        return size16to9;
     }
 
     public int getPlaceholder() {

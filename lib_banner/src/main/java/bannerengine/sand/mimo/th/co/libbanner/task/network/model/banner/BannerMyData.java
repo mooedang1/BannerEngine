@@ -81,7 +81,6 @@ public class BannerMyData {
     }
 
     public void setStatusItem(){
-
         if(getDirectUrl()!=null && getDirectUrl().equals("")==false){
             //1. "#" ไม่ทำ
             //2. "youtube"

@@ -1,6 +1,8 @@
 package bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.recyclerview.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -174,6 +176,15 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         };
     }
 
+    public void openBrowser(final BannerViewHolder bannerViewHolder, final BannerMyData bannerMyData) throws Exception {
+        try {
+            Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerMyData.getDirectUrl()));
+            bannerViewHolder.webView.getContext().startActivity(openUrlIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setWebviewSource(final BannerViewHolder bannerViewHolder, final BannerMyData bannerMyData) throws IOException {
         Context context = bannerViewHolder.webView.getContext();
         setControlRunnable(bannerViewHolder, bannerMyData);
@@ -255,6 +266,12 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 try {
                     setWebviewSource(bannerViewHolder, bannerMyData);
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(bannerMyData.getStatusDirect() == StateBannerFragment.StatusDirect.WEB){
+                try {
+                    openBrowser(bannerViewHolder, bannerMyData);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

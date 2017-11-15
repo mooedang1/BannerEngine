@@ -13,17 +13,20 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reset"
-            android:onClick="reset"/>
+            android:onClick="reset"
+            android:text="Reset" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nextpage"
-            android:onClick="nextpage"/>
+            android:onClick="nextpage"
+            android:text="Nextpage" />
+
         <bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner.LayoutAllBanner
             android:id="@+id/layoutAllBanner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            />
 
     </LinearLayout>
 

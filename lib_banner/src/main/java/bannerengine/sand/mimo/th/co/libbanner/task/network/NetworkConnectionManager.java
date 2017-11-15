@@ -39,7 +39,7 @@ public class NetworkConnectionManager {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(Config.getInstance().getUrl())
+                .baseUrl(Config.getInstance().getBase_url())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
