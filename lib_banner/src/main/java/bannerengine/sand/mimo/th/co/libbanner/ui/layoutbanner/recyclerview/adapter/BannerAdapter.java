@@ -83,7 +83,9 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
-            if(bannerMyData.getStateYoutube() == StateBannerFragment.StateYoutube.YOUTUBE_BREAK){
+            checkAutoVideo(bannerViewHolder, bannerMyData);
+
+            if (bannerMyData.getStateYoutube() == StateBannerFragment.StateYoutube.YOUTUBE_BREAK) {
                 bannerViewHolder.webView.removeCallbacks(runnable);
                 bannerViewHolder.webView.loadUrl("about:blank");
             }
@@ -124,7 +126,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public void stopVideo(){
+    public void stopVideo() {
         if (bannerDataList.isEmpty()) {
             return;
         }
@@ -185,11 +187,12 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private void setWebviewSource(final BannerViewHolder bannerViewHolder, final BannerMyData bannerMyData) throws IOException {
+    private void setVideoSource(final BannerViewHolder bannerViewHolder, final BannerMyData bannerMyData) throws IOException {
+        Config.getInstance().setBreakAutoRun(true);
         Context context = bannerViewHolder.webView.getContext();
         setControlRunnable(bannerViewHolder, bannerMyData);
 
-        HashMap<String, String> params = UrlParameter.getInstance().getQueryString(bannerMyData.getDirectUrl());
+        final HashMap<String, String> params = UrlParameter.getInstance().getQueryString(bannerMyData.getDirectUrl());
 
         InputStream is = context.getAssets().open("youtube.html");
         int size = is.available();
@@ -264,11 +267,11 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 bannerMyData.setStateBannerFragment(StateBannerFragment.StateFragment.SHOW_VIDEO);
                 setShowVideo(bannerViewHolder);
                 try {
-                    setWebviewSource(bannerViewHolder, bannerMyData);
+                    setVideoSource(bannerViewHolder, bannerMyData);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else if(bannerMyData.getStatusDirect() == StateBannerFragment.StatusDirect.WEB){
+            } else if (bannerMyData.getStatusDirect() == StateBannerFragment.StatusDirect.WEB) {
                 try {
                     openBrowser(bannerViewHolder, bannerMyData);
                 } catch (Exception e) {
@@ -277,4 +280,12 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
         }
     }
+
+    private void checkAutoVideo(BannerViewHolder bannerViewHolder, BannerMyData bannerMyData) {
+        final HashMap<String, String> params = UrlParameter.getInstance().getQueryString(bannerMyData.getDirectUrl());
+        if (params.get("autoplay") != null && params.get("autoplay").equals("1")) {
+            clickControlShowLayOut(bannerViewHolder,bannerMyData);
+        }
+    }
+
 }

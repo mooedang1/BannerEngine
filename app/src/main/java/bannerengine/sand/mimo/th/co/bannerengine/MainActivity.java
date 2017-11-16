@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements LayoutAllBanner.O
         layoutAllBanner
                 .setBase_url("https://ws-adv.ais.co.th/")
                 .setAutoRun(true)
-                .setSpeedScroll(5000)
-                .setPlaceholder(R.drawable.placeholder1);
+                .setSpeedScroll(1200);
+//                .setPlaceholder(R.drawable.placeholder1);
         layoutAllBanner.setUp("6651bc909ffd809a562227f9b083f0aa76aee5cc", "freesongs", "10", true);
         layoutAllBanner.setListener(this);
     }

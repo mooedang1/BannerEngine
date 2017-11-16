@@ -1,5 +1,6 @@
 package bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner;
 
+import bannerengine.sand.mimo.th.co.libbanner.global.Config;
 import bannerengine.sand.mimo.th.co.libbanner.global.LogUtil;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.NetworkConnectionManager;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.callback.onNetworkCallbackListener;
@@ -28,7 +29,7 @@ public class LayoutAllBannerPresenter implements LayoutAllBannerContractor.Actio
     @Override
     public void OnClickItemBanner(BannerMyData bannerMyData){
         if(bannerMyData.getStateBannerFragment() == StateBannerFragment.StateFragment.SHOW_VIDEO){
-            view.setBreakAutoRun(true);
+            Config.getInstance().setBreakAutoRun(true);
         }
     }
 

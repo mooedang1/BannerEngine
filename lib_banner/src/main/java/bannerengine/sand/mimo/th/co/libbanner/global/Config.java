@@ -20,6 +20,7 @@ public class Config {
 
     private String base_url = "https://ws-adv.ais.co.th/";
     private boolean autoRun = true;
+    private boolean breakAutoRun = false;
     private int speedScroll = 1200;
     private int placeholder = R.drawable.placeholder;
     private int bannerWidth;
@@ -43,7 +44,7 @@ public class Config {
         LogUtil.d(Integer.toString(size16to9));
     }
 
-    public void setBase_url(String base_url){
+    public void setBase_url(String base_url) {
         this.base_url = base_url;
     }
 
@@ -77,6 +78,14 @@ public class Config {
 
     public void setAutoRun(boolean autoRun) {
         this.autoRun = autoRun;
+    }
+
+    public boolean getBreakAutoRun() {
+        return breakAutoRun;
+    }
+
+    public void setBreakAutoRun(boolean breakAutoRun) {
+        this.breakAutoRun = breakAutoRun;
     }
 
 }

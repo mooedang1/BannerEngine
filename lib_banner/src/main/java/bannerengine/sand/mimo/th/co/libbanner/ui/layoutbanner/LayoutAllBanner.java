@@ -36,14 +36,13 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     private BannerAdapter bannerAdapter;
     private OnListener mListener;
     private int runPosition = 0;
-    private boolean breakAutoRun = false;
     private TextView breakview;
 
     private Runnable runnable = new Runnable() {
         boolean flag = true;
         @Override
         public void run() {
-            if (Config.getInstance().getAutoRun() && getBreakAutoRun() == false) {
+            if (Config.getInstance().getAutoRun() && Config.getInstance().getBreakAutoRun() == false) {
                 if (runPosition < bannerAdapter.getItemCount()) {
                     if (runPosition == bannerAdapter.getItemCount() - 1) {
                         flag = false;
@@ -150,10 +149,10 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
                 super.onScrollStateChanged(recyclerView, newState);
                 LogUtil.i("The RecyclerView is not currently scrolling"+Integer.toString(newState));
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    breakAutoRun = false;
+                    Config.getInstance().setBreakAutoRun(false);
                     bannerAdapter.updateAllShowBanner();
                 } else if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
-                    breakAutoRun = true;
+                    Config.getInstance().setBreakAutoRun(true);
                 }
             }
         });
@@ -189,15 +188,6 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         mPresenter.OnClickItemBanner(bannerMyData);
         mListener.OnClickItemBanner(bannerMyData);
 
-    }
-
-    private boolean getBreakAutoRun() {
-        return breakAutoRun;
-    }
-
-    @Override
-    public void setBreakAutoRun(boolean breakAutoRun) {
-        this.breakAutoRun = breakAutoRun;
     }
 
     private void autoRun() {

@@ -11,8 +11,6 @@ public class LayoutAllBannerContractor {
     interface View{
         void setUpDataItem(BannerData bannerData);
 
-        void setBreakAutoRun(boolean breakAutoRun);
-
         LayoutAllBanner removeBannerAll();
     }
 
