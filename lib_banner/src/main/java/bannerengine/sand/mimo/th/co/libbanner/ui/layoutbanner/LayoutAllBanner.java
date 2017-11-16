@@ -37,6 +37,8 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     private OnListener mListener;
     private int runPosition = 0;
     private boolean breakAutoRun = false;
+    private TextView breakview;
+
     private Runnable runnable = new Runnable() {
         boolean flag = true;
         @Override
@@ -66,8 +68,9 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         void OnClickItemBanner(BannerMyData bannerMyData);
     }
 
-    public void setListener(OnListener mListener) {
+    public LayoutAllBanner setListener(OnListener mListener) {
         this.mListener = mListener;
+        return this;
     }
 
     public LayoutAllBanner(Context context) {
@@ -96,8 +99,6 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         }
     }
 
-
-
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
@@ -120,16 +121,12 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         super.onAttachedToWindow();
     }
 
-
-    TextView breakview;
-
     private void init() {
         mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this);
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         View v = mInflater.inflate(R.layout.layout_banner_pagerview, this, true);
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
         breakview = (TextView)v.findViewById(R.id.breakview);
-
         breakview.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,23 +161,6 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     }
 
 
-    public void setUp(final String chanelId, final String categoryId, final String limit, final boolean directUrl) {
-        recyclerview.post(new Runnable() {
-            @Override
-            public void run() {
-                Config.getInstance().setSize16to9(getContext());
-                removeBannerAll();
-                mPresenter.callService(chanelId, categoryId, limit, directUrl);
-            }
-        });
-    }
-
-    public void removeBannerAll() {
-        if (bannerAdapter != null) {
-            bannerAdapter.removeAllBanner();
-        }
-    }
-
     @Override
     public void setUpDataItem(BannerData bannerData) {
         bannerAdapter = new BannerAdapter(bannerData.getData());
@@ -207,12 +187,11 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     @Override
     public void OnClickItemBanner(BannerMyData bannerMyData) {
         mPresenter.OnClickItemBanner(bannerMyData);
-
         mListener.OnClickItemBanner(bannerMyData);
 
     }
 
-    public boolean getBreakAutoRun() {
+    private boolean getBreakAutoRun() {
         return breakAutoRun;
     }
 
@@ -221,11 +200,51 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         this.breakAutoRun = breakAutoRun;
     }
 
-
     private void autoRun() {
         recyclerview.removeCallbacks(runnable);
         recyclerview.postDelayed(runnable, Config.getInstance().getSpeedScroll());
     }
+
+
+    public LayoutAllBanner setUp(final String chanelId, final String categoryId, final String limit, final boolean directUrl) {
+        recyclerview.post(new Runnable() {
+            @Override
+            public void run() {
+                Config.getInstance().setSize16to9(getContext());
+                mPresenter.callService(chanelId, categoryId, limit, directUrl);
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public LayoutAllBanner removeBannerAll() {
+        if (bannerAdapter != null) {
+            bannerAdapter.removeAllBanner();
+        }
+        return this;
+    }
+
+    public LayoutAllBanner setBase_url(String base_url){
+        Config.getInstance().setBase_url(base_url);
+        return this;
+    }
+
+    public LayoutAllBanner setAutoRun(Boolean autoRun){
+        Config.getInstance().setAutoRun(autoRun);
+        return this;
+    }
+
+    public LayoutAllBanner setSpeedScroll(int speedScroll){
+        Config.getInstance().setSpeedScroll(speedScroll);
+        return this;
+    }
+
+    public LinearLayout setPlaceholder(int placeholder) {
+        Config.getInstance().setPlaceholder(placeholder);
+        return this;
+    }
+
 }
 
 

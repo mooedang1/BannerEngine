@@ -18,8 +18,7 @@ public class Config {
         return ourInstance;
     }
 
-
-    private final String base_url = "https://ws-adv.ais.co.th/";
+    private String base_url = "https://ws-adv.ais.co.th/";
     private boolean autoRun = true;
     private int speedScroll = 1200;
     private int placeholder = R.drawable.placeholder;
@@ -44,6 +43,10 @@ public class Config {
         LogUtil.d(Integer.toString(size16to9));
     }
 
+    public void setBase_url(String base_url){
+        this.base_url = base_url;
+    }
+
     public String getBase_url() {
         return base_url;
     }
@@ -56,7 +59,7 @@ public class Config {
         return placeholder;
     }
 
-    private void setPlaceholder(int placeholder) {
+    public void setPlaceholder(int placeholder) {
         this.placeholder = placeholder;
     }
 

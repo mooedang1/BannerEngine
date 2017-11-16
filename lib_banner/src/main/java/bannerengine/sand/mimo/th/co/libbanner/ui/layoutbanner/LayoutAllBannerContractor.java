@@ -12,6 +12,8 @@ public class LayoutAllBannerContractor {
         void setUpDataItem(BannerData bannerData);
 
         void setBreakAutoRun(boolean breakAutoRun);
+
+        LayoutAllBanner removeBannerAll();
     }
 
     interface Action{
