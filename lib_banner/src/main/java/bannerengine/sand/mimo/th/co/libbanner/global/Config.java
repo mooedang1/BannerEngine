@@ -12,11 +12,7 @@ import bannerengine.sand.mimo.th.co.libbanner.R;
 
 public class Config {
 
-    private static Config ourInstance = new Config();
 
-    public static Config getInstance() {
-        return ourInstance;
-    }
 
     private String base_url = "https://ws-adv.ais.co.th/";
     private boolean autoRun = true;

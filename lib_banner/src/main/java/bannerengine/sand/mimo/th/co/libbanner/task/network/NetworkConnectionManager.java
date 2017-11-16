@@ -23,7 +23,7 @@ public class NetworkConnectionManager {
     public NetworkConnectionManager() {
     }
 
-    public void callServer(final onNetworkCallbackListener listener,String chanelId,String categoryId,String limit,boolean directUrl){
+    public void callServer(final onNetworkCallbackListener listener,Config config,String chanelId,String categoryId,String limit,boolean directUrl){
 
 //        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 //        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -39,7 +39,7 @@ public class NetworkConnectionManager {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(Config.getInstance().getBase_url())
+                .baseUrl(config.getBase_url())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

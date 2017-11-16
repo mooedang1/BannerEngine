@@ -30,6 +30,7 @@ import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
  */
 
 public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerContractor.View, BannerAdapter.OnListener {
+    private Config config = new Config();
     private LayoutAllBannerContractor.Action mPresenter;
     private ItemTouchHelper itemTouchHelper;
     private RecyclerView recyclerview;
@@ -42,7 +43,7 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         boolean flag = true;
         @Override
         public void run() {
-            if (Config.getInstance().getAutoRun() && Config.getInstance().getBreakAutoRun() == false) {
+            if (config.getAutoRun() && config.getBreakAutoRun() == false) {
                 if (runPosition < bannerAdapter.getItemCount()) {
                     if (runPosition == bannerAdapter.getItemCount() - 1) {
                         flag = false;
@@ -121,7 +122,7 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     }
 
     private void init() {
-        mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this);
+        mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this,config);
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         View v = mInflater.inflate(R.layout.layout_banner_pagerview, this, true);
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
@@ -149,10 +150,10 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
                 super.onScrollStateChanged(recyclerView, newState);
                 LogUtil.i("The RecyclerView is not currently scrolling"+Integer.toString(newState));
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Config.getInstance().setBreakAutoRun(false);
+                    config.setBreakAutoRun(false);
                     bannerAdapter.updateAllShowBanner();
                 } else if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
-                    Config.getInstance().setBreakAutoRun(true);
+                    config.setBreakAutoRun(true);
                 }
             }
         });
@@ -162,7 +163,7 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
 
     @Override
     public void setUpDataItem(BannerData bannerData) {
-        bannerAdapter = new BannerAdapter(bannerData.getData());
+        bannerAdapter = new BannerAdapter(bannerData.getData(),config);
         recyclerview.setAdapter(createAnimationInAdapter(bannerAdapter));
         recyclerview.setItemAnimator(createScaleOutAnimationOutAdapter());
         bannerAdapter.setListener(this);
@@ -192,7 +193,7 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
 
     private void autoRun() {
         recyclerview.removeCallbacks(runnable);
-        recyclerview.postDelayed(runnable, Config.getInstance().getSpeedScroll());
+        recyclerview.postDelayed(runnable, config.getSpeedScroll());
     }
 
 
@@ -200,7 +201,7 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         recyclerview.post(new Runnable() {
             @Override
             public void run() {
-                Config.getInstance().setSize16to9(getContext());
+                config.setSize16to9(getContext());
                 mPresenter.callService(chanelId, categoryId, limit, directUrl);
             }
         });
@@ -216,22 +217,27 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     }
 
     public LayoutAllBanner setBase_url(String base_url){
-        Config.getInstance().setBase_url(base_url);
+        config.setBase_url(base_url);
         return this;
     }
 
     public LayoutAllBanner setAutoRun(Boolean autoRun){
-        Config.getInstance().setAutoRun(autoRun);
+        config.setAutoRun(autoRun);
         return this;
     }
 
     public LayoutAllBanner setSpeedScroll(int speedScroll){
-        Config.getInstance().setSpeedScroll(speedScroll);
+        config.setSpeedScroll(speedScroll);
         return this;
     }
 
     public LinearLayout setPlaceholder(int placeholder) {
-        Config.getInstance().setPlaceholder(placeholder);
+        config.setPlaceholder(placeholder);
+        return this;
+    }
+
+    public LinearLayout setConfig(Config config){
+        this.config = config;
         return this;
     }
 

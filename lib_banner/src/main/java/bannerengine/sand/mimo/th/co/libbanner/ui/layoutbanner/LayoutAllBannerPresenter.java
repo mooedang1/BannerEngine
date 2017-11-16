@@ -17,19 +17,21 @@ import retrofit2.Call;
 public class LayoutAllBannerPresenter implements LayoutAllBannerContractor.Action, onNetworkCallbackListener {
     private LayoutAllBannerContractor.View view;
     private BannerData bannerData = new BannerData();
+    private Config config;
 
-    public LayoutAllBannerPresenter(LayoutAllBannerContractor.View view) {
+    public LayoutAllBannerPresenter(LayoutAllBannerContractor.View view,Config config) {
         this.view = view;
+        this.config = config;
     }
     @Override
     public void callService(String chanelId,String categoryId,String limit,boolean directUrl){
-        new NetworkConnectionManager().callServer(this,chanelId,categoryId,limit,directUrl);
+        new NetworkConnectionManager().callServer(this,config,chanelId,categoryId,limit,directUrl);
     }
 
     @Override
     public void OnClickItemBanner(BannerMyData bannerMyData){
         if(bannerMyData.getStateBannerFragment() == StateBannerFragment.StateFragment.SHOW_VIDEO){
-            Config.getInstance().setBreakAutoRun(true);
+            config.setBreakAutoRun(true);
         }
     }
 

@@ -39,6 +39,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<BannerMyData> bannerDataList;
     private OnListener mListener;
     private Runnable runnable;
+    private Config config;
 
     public interface OnListener {
         void OnClickItemBanner(BannerMyData bannerMyData);
@@ -48,8 +49,9 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mListener = mListener;
     }
 
-    public BannerAdapter(List<BannerMyData> bannerDataList) {
+    public BannerAdapter(List<BannerMyData> bannerDataList, Config config) {
         this.bannerDataList = bannerDataList;
+        this.config = config;
     }
 
     @Override
@@ -65,11 +67,11 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
             final BannerMyData bannerMyData = bannerDataList.get(position);
 
-            bannerViewHolder.LayoutBannerContent.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, Config.getInstance().getSize16to9()));
+            bannerViewHolder.LayoutBannerContent.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, config.getSize16to9()));
 
             Glide.with(bannerViewHolder.imageView.getContext())
                     .load(bannerMyData.getImage().getTargetBannerBBHigh())
-                    .placeholder(Config.getInstance().getPlaceholder())
+                    .placeholder(config.getPlaceholder())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(bannerViewHolder.imageView);
 
@@ -188,7 +190,7 @@ public class BannerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void setVideoSource(final BannerViewHolder bannerViewHolder, final BannerMyData bannerMyData) throws IOException {
-        Config.getInstance().setBreakAutoRun(true);
+        config.setBreakAutoRun(true);
         Context context = bannerViewHolder.webView.getContext();
         setControlRunnable(bannerViewHolder, bannerMyData);
 
