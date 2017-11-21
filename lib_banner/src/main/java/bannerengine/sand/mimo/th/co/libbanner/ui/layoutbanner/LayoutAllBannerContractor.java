@@ -11,7 +11,11 @@ public class LayoutAllBannerContractor {
     interface View{
         void setUpDataItem(BannerData bannerData);
 
+<<<<<<< HEAD
         LayoutAllBanner removeBannerAll();
+=======
+        void setBreakAutoRun(boolean breakAutoRun);
+>>>>>>> parent of 2fff875... no message
     }
 
     interface Action{

@@ -11,8 +11,7 @@
         android:layout_height="30dp"
         android:layout_margin="20dp"
         android:background="@color/my_black"
-        android:text="Break"
-        android:visibility="gone"/>
+        android:text="Break" />
 
 
     <android.support.v7.widget.RecyclerView
