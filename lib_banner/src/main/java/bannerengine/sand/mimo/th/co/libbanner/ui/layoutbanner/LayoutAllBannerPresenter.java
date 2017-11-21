@@ -40,6 +40,7 @@ public class LayoutAllBannerPresenter implements LayoutAllBannerContractor.Actio
     public void onResponse(Call<BannerData> call, BannerData bannerData) {
         LogUtil.d("onResponse");
         if(bannerData!=null){
+            view.removeBannerAll();
             this.bannerData = bannerData;
             for (BannerMyData item:this.bannerData.getData()) {
                 item.setStatusItem();

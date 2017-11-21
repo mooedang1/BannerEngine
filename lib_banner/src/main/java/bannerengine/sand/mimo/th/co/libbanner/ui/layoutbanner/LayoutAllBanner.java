@@ -37,12 +37,8 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     private BannerAdapter bannerAdapter;
     private OnListener mListener;
     private int runPosition = 0;
-<<<<<<< HEAD
     private TextView breakview;
 
-=======
-    private boolean breakAutoRun = false;
->>>>>>> parent of 2fff875... no message
     private Runnable runnable = new Runnable() {
         boolean flag = true;
         @Override
@@ -72,8 +68,9 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         void OnClickItemBanner(BannerMyData bannerMyData);
     }
 
-    public void setListener(OnListener mListener) {
+    public LayoutAllBanner setListener(OnListener mListener) {
         this.mListener = mListener;
+        return this;
     }
 
     public LayoutAllBanner(Context context) {
@@ -102,8 +99,6 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         }
     }
 
-
-
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
@@ -126,16 +121,12 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         super.onAttachedToWindow();
     }
 
-
-    TextView breakview;
-
     private void init() {
         mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this,config);
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         View v = mInflater.inflate(R.layout.layout_banner_pagerview, this, true);
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
         breakview = (TextView)v.findViewById(R.id.breakview);
-
         breakview.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,23 +161,6 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     }
 
 
-    public void setUp(final String chanelId, final String categoryId, final String limit, final boolean directUrl) {
-        recyclerview.post(new Runnable() {
-            @Override
-            public void run() {
-                Config.getInstance().setSize16to9(getContext());
-                removeBannerAll();
-                mPresenter.callService(chanelId, categoryId, limit, directUrl);
-            }
-        });
-    }
-
-    public void removeBannerAll() {
-        if (bannerAdapter != null) {
-            bannerAdapter.removeAllBanner();
-        }
-    }
-
     @Override
     public void setUpDataItem(BannerData bannerData) {
         bannerAdapter = new BannerAdapter(bannerData.getData(),config);
@@ -213,29 +187,14 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
     @Override
     public void OnClickItemBanner(BannerMyData bannerMyData) {
         mPresenter.OnClickItemBanner(bannerMyData);
-
         mListener.OnClickItemBanner(bannerMyData);
 
     }
 
-<<<<<<< HEAD
-=======
-    public boolean getBreakAutoRun() {
-        return breakAutoRun;
-    }
-
-    @Override
-    public void setBreakAutoRun(boolean breakAutoRun) {
-        this.breakAutoRun = breakAutoRun;
-    }
-
-
->>>>>>> parent of 2fff875... no message
     private void autoRun() {
         recyclerview.removeCallbacks(runnable);
         recyclerview.postDelayed(runnable, config.getSpeedScroll());
     }
-<<<<<<< HEAD
 
 
     public LayoutAllBanner setUp(final String chanelId, final String categoryId, final String limit, final boolean directUrl) {
@@ -282,8 +241,6 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         return this;
     }
 
-=======
->>>>>>> parent of 2fff875... no message
 }
 
 
