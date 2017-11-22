@@ -1,5 +1,9 @@
 package bannerengine.sand.mimo.th.co.libbanner.ui.layoutbanner;
 
+import android.content.Context;
+
+import com.bumptech.glide.Glide;
+
 import bannerengine.sand.mimo.th.co.libbanner.global.Config;
 import bannerengine.sand.mimo.th.co.libbanner.global.LogUtil;
 import bannerengine.sand.mimo.th.co.libbanner.task.network.NetworkConnectionManager;
@@ -18,13 +22,16 @@ public class LayoutAllBannerPresenter implements LayoutAllBannerContractor.Actio
     private LayoutAllBannerContractor.View view;
     private BannerData bannerData = new BannerData();
     private Config config;
+    private Context context;
 
-    public LayoutAllBannerPresenter(LayoutAllBannerContractor.View view,Config config) {
+    public LayoutAllBannerPresenter(LayoutAllBannerContractor.View view, Config config, Context context) {
         this.view = view;
         this.config = config;
+        this.context = context;
     }
     @Override
     public void callService(String chanelId,String categoryId,String limit,boolean directUrl){
+        Glide.get(context).clearMemory();
         new NetworkConnectionManager().callServer(this,config,chanelId,categoryId,limit,directUrl);
     }
 

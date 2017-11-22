@@ -10,13 +10,11 @@ import bannerengine.sand.mimo.th.co.libbanner.task.network.model.banner.BannerMy
 public class LayoutAllBannerContractor {
     interface View{
         void setUpDataItem(BannerData bannerData);
-
         LayoutAllBanner removeBannerAll();
     }
 
     interface Action{
         void callService(String chanelId,String categoryId,String limit,boolean directUrl);
-
         void OnClickItemBanner(BannerMyData bannerMyData);
     }
 }

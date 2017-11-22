@@ -121,8 +121,9 @@ public class LayoutAllBanner extends LinearLayout implements LayoutAllBannerCont
         super.onAttachedToWindow();
     }
 
+
     private void init() {
-        mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this,config);
+        mPresenter = new LayoutAllBannerPresenter(LayoutAllBanner.this,config,getContext());
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         View v = mInflater.inflate(R.layout.layout_banner_pagerview, this, true);
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
